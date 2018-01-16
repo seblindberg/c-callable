@@ -6,7 +6,9 @@
 
 /* Private Functions –––––––––––––––––––––––––––––––––––––––––––––––––––––––– */
 
-
+static bool_t
+  priority_insert_handler(s_list_item_t const *item,
+                          s_list_item_t const *compare_to);
 
 
 /* Global Variables ––––––––––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -25,7 +27,8 @@ context__ctor(context_t *ctx)
 void
 context__run(context_t *ctx, callable_t *callable)
 {
-  s_list__push(&ctx->_super, &callable->_super);
+  s_list__insert_ordered(&ctx->_super, &callable->_super,
+                         priority_insert_handler);
 }
 
 void
@@ -40,4 +43,11 @@ context__spin_once(context_t *ctx)
   }
   
   callable__call(callable);
+}
+
+bool_t
+priority_insert_handler(s_list_item_t const *item,
+                        s_list_item_t const *compare_to)
+{
+  return ((callable_t *) item)->priority > ((callable_t *) compare_to)->priority;
 }

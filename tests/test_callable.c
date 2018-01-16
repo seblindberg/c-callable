@@ -4,9 +4,25 @@
 
 int tests_run = 0;
 
+int callback_did_run;
+void
+callable_callback()
+{
+  callback_did_run = 1;
+}
+
 static char *
 test_callable()
 {
+  callable_t callable;
+  
+  callable__ctor(&callable, callable_callback);
+  
+  callback_did_run = 0;
+  callable__call(&callable);
+  mu_assert("The callback should have run",
+            callback_did_run);
+  
   return NULL;
 }
 
