@@ -48,44 +48,9 @@ test_context()
 }
 
 static char *
-test_priority()
-{
-  test_callable_t callable_a;
-  test_callable_t callable_b;
-  context_t  ctx;
-  
-  callable__ctor(&callable_a._super, callable_callback);
-  callable__ctor(&callable_b._super, callable_callback);
-  
-  callable__set_priority(&callable_a._super, 1);
-  callable__set_priority(&callable_b._super, 2);
-  
-  context__ctor(&ctx);
-  
-  context__schedule(&ctx, &callable_a._super);
-  context__schedule(&ctx, &callable_b._super);
-  
-  callable_a.did_run = 0;
-  callable_b.did_run = 0;
-  
-  context__spin_once(&ctx);
-  
-  mu_assert("Only callback b should have run",
-            callable_b.did_run && !callable_a.did_run);
-            
-  context__spin_once(&ctx);
-  
-  mu_assert("Callback a should have run",
-            callable_a.did_run);
-            
-  return NULL;
-}
-
-static char *
 all_tests()
 {
   mu_run_test(test_context);
-  mu_run_test(test_priority);
   return NULL;
 }
 

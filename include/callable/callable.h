@@ -19,7 +19,6 @@ typedef void (*callable__callback_t)(callable_t *callable);
 struct callable {
   s_list_item_t        _super;
   callable__callback_t  callback;
-  uint8_t               priority;
 };
 
 
@@ -42,10 +41,6 @@ void
 static inline void
   callable__call(callable_t *callable)
   NONNULL;
-  
-static inline void
-  callable__set_priority(callable_t *callable, uint8_t priority)
-  NONNULL;
 
 
 /* Inline Function Definitions ---------------------------------------------- */
@@ -56,10 +51,5 @@ callable__call(callable_t *callable)
   callable->callback(callable);
 }
 
-void
-callable__set_priority(callable_t *callable, uint8_t priority)
-{
-  callable->priority = priority;
-}
 
 #endif /* CALLABLE_H */
