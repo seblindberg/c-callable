@@ -35,10 +35,10 @@ TST_DEPS_OBJ = $(TST_DEPS:%=$(OBJ_DIR)/%.o)
 
 # FLAGS ------------------------------------------------------------------------
 
-CPPFLAGS += -I$(INC_DIR) #-I$(EXT_DIR)/fifo/include -I$(EXT_DIR)/list/include
+CPPFLAGS += -I$(INC_DIR) -I$(EXT_DIR)/list/include
 CFLAGS   += -Wall
 LDFLAGS  += -L$(LIB_DIR)
-LDLIBS   += -l$(LIBRARY_NAME) #-lfifo -llist
+LDLIBS   += -l$(LIBRARY_NAME) -llist
 
 
 # MAKE RULES -------------------------------------------------------------------
