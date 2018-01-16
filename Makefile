@@ -43,7 +43,7 @@ LDLIBS   += -l$(LIBRARY_NAME) -llist
 
 # MAKE RULES -------------------------------------------------------------------
 
-library: $(LIBRARY)
+library: $(LIBRARY) $(LIB_DIR)/liblist.a
 
 # Run each test executable individually
 $(TST_EXE): %: $(BLD_DIR)/%
@@ -57,7 +57,7 @@ all: library
 clean:
 		$(RM) $(SRC_OBJ) $(TST_OBJ) $(LIBRARY) $(TST_EXE:%=$(BLD_DIR)/%)
 
-.PHONY: all clean $(TST_EXE)
+.PHONY: library $(TST_EXE) test all clean
 
 # DIRECTORIES ------------------------------------------------------------------
 
@@ -92,5 +92,5 @@ $(TST_OBJ): $(OBJ_DIR)/%.o: $(TST_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 # Build the test executables
-$(BLD_DIR)/test_%: $(OBJ_DIR)/test_%.o $(TST_DEPS_OBJ) $(LIBRARY)| $(BLD_DIR)
+$(BLD_DIR)/test_%: $(OBJ_DIR)/test_%.o $(TST_DEPS_OBJ) $(LIBRARY) | $(BLD_DIR)
 	$(CC) $(LDFLAGS) $< $(TST_DEPS_OBJ) $(LDLIBS) -o $@
