@@ -6,7 +6,7 @@ int tests_run = 0;
 
 int callback_did_run;
 void
-callable_callback()
+callable_callback(callable_t *callable)
 {
   callback_did_run = 1;
 }

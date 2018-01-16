@@ -13,13 +13,14 @@
 
 /* Data Types --------------------------------------------------------------- */
 
-typedef void (*callable__callback_t)(void);
+typedef struct callable callable_t;
+typedef void (*callable__callback_t)(callable_t *callable);
 
-typedef struct {
+struct callable {
   s_list_item_t        _super;
   callable__callback_t  callback;
   uint8_t               priority;
-} callable_t;
+};
 
 
 /* Macros ----------------------------------------+--------+----------------- */
@@ -52,7 +53,7 @@ static inline void
 void
 callable__call(callable_t *callable)
 {
-  callable->callback();
+  callable->callback(callable);
 }
 
 void

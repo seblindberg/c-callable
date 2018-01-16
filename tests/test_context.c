@@ -5,47 +5,44 @@
 
 int tests_run = 0;
 
-int callback_a_did_run;
-void
-callable_callback_a()
-{
-  callback_a_did_run = 1;
-}
+typedef struct {
+  callable_t _super;
+  bool_t     did_run;
+} test_callable_t;
 
-int callback_b_did_run;
 void
-callable_callback_b()
+callable_callback(callable_t *callable)
 {
-  callback_b_did_run = 1;
+  ((test_callable_t *) callable)->did_run = 1;
 }
 
 static char *
 test_context()
 {
-  callable_t callable_a;
-  callable_t callable_b;
+  test_callable_t callable_a;
+  test_callable_t callable_b;
   context_t  ctx;
   
-  callable__ctor(&callable_a, callable_callback_a);
-  callable__ctor(&callable_b, callable_callback_b);
+  callable__ctor(&callable_a._super, callable_callback);
+  callable__ctor(&callable_b._super, callable_callback);
     
   context__ctor(&ctx);
   
-  context__run(&ctx, &callable_a);
-  context__run(&ctx, &callable_b);
+  context__run(&ctx, &callable_a._super);
+  context__run(&ctx, &callable_b._super);
   
-  callback_a_did_run = 0;
-  callback_b_did_run = 0;
+  callable_a.did_run = 0;
+  callable_b.did_run = 0;
   
   context__spin_once(&ctx);
   
   mu_assert("Only callback a should have run",
-            callback_a_did_run && !callback_b_did_run);
+            callable_a.did_run && !callable_b.did_run);
             
   context__spin_once(&ctx);
   
   mu_assert("Callback b should have run",
-            callback_b_did_run);
+            callable_b.did_run);
 
   return NULL;
 }
@@ -53,33 +50,33 @@ test_context()
 static char *
 test_priority()
 {
-  callable_t callable_a;
-  callable_t callable_b;
+  test_callable_t callable_a;
+  test_callable_t callable_b;
   context_t  ctx;
   
-  callable__ctor(&callable_a, callable_callback_a);
-  callable__ctor(&callable_b, callable_callback_b);
+  callable__ctor(&callable_a._super, callable_callback);
+  callable__ctor(&callable_b._super, callable_callback);
   
-  callable__set_priority(&callable_a, 1);
-  callable__set_priority(&callable_b, 2);
+  callable__set_priority(&callable_a._super, 1);
+  callable__set_priority(&callable_b._super, 2);
   
   context__ctor(&ctx);
   
-  context__run(&ctx, &callable_a);
-  context__run(&ctx, &callable_b);
+  context__run(&ctx, &callable_a._super);
+  context__run(&ctx, &callable_b._super);
   
-  callback_a_did_run = 0;
-  callback_b_did_run = 0;
+  callable_a.did_run = 0;
+  callable_b.did_run = 0;
   
   context__spin_once(&ctx);
   
   mu_assert("Only callback b should have run",
-            callback_b_did_run && !callback_a_did_run);
+            callable_b.did_run && !callable_a.did_run);
             
   context__spin_once(&ctx);
   
   mu_assert("Callback a should have run",
-            callback_a_did_run);
+            callable_a.did_run);
             
   return NULL;
 }
