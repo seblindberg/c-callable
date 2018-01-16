@@ -32,7 +32,7 @@ void
   NONNULL;
   
 void
-  context__run(context_t *ctx, callable_t *callable)
+  context__schedule(context_t *ctx, callable_t *callable)
   NONNULL;
 
 void

@@ -28,8 +28,8 @@ test_context()
     
   context__ctor(&ctx);
   
-  context__run(&ctx, &callable_a._super);
-  context__run(&ctx, &callable_b._super);
+  context__schedule(&ctx, &callable_a._super);
+  context__schedule(&ctx, &callable_b._super);
   
   callable_a.did_run = 0;
   callable_b.did_run = 0;
@@ -62,8 +62,8 @@ test_priority()
   
   context__ctor(&ctx);
   
-  context__run(&ctx, &callable_a._super);
-  context__run(&ctx, &callable_b._super);
+  context__schedule(&ctx, &callable_a._super);
+  context__schedule(&ctx, &callable_b._super);
   
   callable_a.did_run = 0;
   callable_b.did_run = 0;

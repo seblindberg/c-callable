@@ -25,7 +25,7 @@ context__ctor(context_t *ctx)
 }
 
 void
-context__run(context_t *ctx, callable_t *callable)
+context__schedule(context_t *ctx, callable_t *callable)
 {
   s_list__insert_ordered(&ctx->_super, &callable->_super,
                          priority_insert_handler);
